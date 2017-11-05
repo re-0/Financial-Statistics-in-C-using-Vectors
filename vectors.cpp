@@ -15,8 +15,8 @@
 #include <algorithm>
 
 // Prepare data output
-template<typename A, typename B, typename C, typename D, typename E, typename F, typename G> void list(A a, B b, C c, D d, E e, F f, G g){
-std::cout << a << "\t" << b << "\t" << c << "\t" << d << "\t" << e << "\t" << f << "\t" << g << std::endl;
+template<typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I> void list(A a, B b, C c, D d, E e, F f, G g, H h, I i){
+std::cout << a << "\t" << b << "\t" << c << "\t" << d << "\t" << e << "\t" << f << "\t" << g << "\t" << h << "\t" << i << std::endl;
 }
 
 double xrp_close[] = {
@@ -59,13 +59,17 @@ double lower = mean - stdev;
 double upper = mean + stdev;
 std::string interval = "["+ std::to_string( lower ) +":"+ std::to_string( upper ) +"]";
 
-char line[100] = "\t\t\t\t#####################################################";
-std::cout << line << std::endl << "\t\t\t\t##" << std::setw(109) 
-<< "Written by re-0                ##\n\t\t\t\t## mean, min, max, sum^2, var(x), st.dev(x), range ##" << std::endl << line << "\n\n\n";
+//skewness & kurtosis
+double skewness = pow((std::accumulate(vec_diff.begin(), vec_diff.end(), 0.0)/ stdev), 3.0) / vec_diff.size();
+double kurtosis = pow((std::accumulate(vec_diff.begin(), vec_diff.end(), 0.0)/ stdev), 4.0) / vec_diff.size();
 
+char line[100] = "\t\t\t\t#########################################################################";
+std::cout << line << std::endl;
+std::cout << "\t\t\t\t##\t\t\t\tWritten by re-0\t\t\t       ##";
+std::cout << "\n\t\t\t\t## mean, min, max, sum^2, var(x), st.dev(x), range, skewness, kurtosis ##" << std::endl << line << "\n\n\n";
 
-list("mean", "\tmin", "max", "sum^2", "\tvar(x)", "\tst.dev(x)", "range");
-list(mean, min, max, squared_sum, variance, stdev, interval);
+list("mean", "\tmin", "max", "sum^2", "\tvar(x)", "\tst.dev(x)", "range", "\t\tskewness", "kurtosis");
+list(mean, min, max, squared_sum, variance, stdev, interval, skewness, kurtosis);
 
 
 std::cout << "\nThere are " << double(vec_xrp.size()) << " values present in the vector.";
